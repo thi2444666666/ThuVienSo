@@ -1,0 +1,68 @@
+﻿
+<!-- templates/admin_edit_book.html -->
+{% extends "base.html" %}
+
+{% block title %}Chỉnh sửa sách - Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2"><i class="fas fa-edit me-2"></i>Chỉnh sửa sách</h1>
+    <a href="{{ url_for('admin_books') }}" class="btn btn-secondary">
+        <i class="fas fa-arrow-left me-2"></i>Quay lại
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="POST">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Tên sách *</label>
+                        <input type="text" class="form-control" id="title" name="title" 
+                               value="{{ book.title }}" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="author" class="form-label">Tác giả *</label>
+                        <input type="text" class="form-control" id="author" name="author" 
+                               value="{{ book.author }}" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="published_year" class="form-label">Năm xuất bản *</label>
+                        <input type="number" class="form-control" id="published_year" name="published_year" 
+                               value="{{ book.published_year }}" min="1000" max="2024" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Mô tả</label>
+                        <textarea class="form-control" id="description" name="description" rows="4">{{ book.description or '' }}</textarea>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    {% if book.cover_image %}
+                    <div class="mb-3">
+                        <label class="form-label">Ảnh bìa hiện tại</label>
+                        <div>
+                            <img src="{{ url_for('static', filename='covers/' + book.cover_image.split('/')[-1]) }}" 
+                                 alt="Cover" style="max-width: 200px; max-height: 250px;">
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i>Cập nhật sách
+                    </button>
+                    <a href="{{ url_for('admin_books') }}" class="btn btn-secondary ms-2">Hủy</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,99 @@
+﻿
+<!-- templates/admin_dashboard.html -->
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Thư viện Số{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2"><i class="fas fa-tachometer-alt me-2"></i>Dashboard Quản trị</h1>
+</div>
+
+<div class="row mb-4">
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card stats-card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="card-body-icon">
+                            <i class="fas fa-book fa-2x float-end text-white-50"></i>
+                        </div>
+                        <div class="mr-5 text-white">
+                            <h5>Tổng số sách</h5>
+                            <h2>{{ stats.total_books }}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card stats-card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="card-body-icon">
+                            <i class="fas fa-users fa-2x float-end text-white-50"></i>
+                        </div>
+                        <div class="mr-5 text-white">
+                            <h5>Tổng người dùng</h5>
+                            <h2>{{ stats.total_users }}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card stats-card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="card-body-icon">
+                            <i class="fas fa-download fa-2x float-end text-white-50"></i>
+                        </div>
+                        <div class="mr-5 text-white">
+                            <h5>Lượt tải hôm nay</h5>
+                            <h2>{{ stats.downloads_today }}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card stats-card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="card-body-icon">
+                            <i class="fas fa-plus fa-2x float-end text-white-50"></i>
+                        </div>
+                        <div class="mr-5 text-white">
+                            <h5>Sách mới hôm nay</h5>
+                            <h2>{{ stats.new_books_today }}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-chart-line me-2"></i>Hoạt động gần đây</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">Thống kê hoạt động hệ thống sẽ được hiển thị ở đây.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+        

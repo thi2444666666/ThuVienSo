@@ -1,0 +1,78 @@
+﻿{% extends "base.html" %}
+
+{% block title %}{{ book.title }} - Thư viện Số{% endblock %}
+
+{% block content %}
+<div class="row pt-3">
+    <div class="col-md-4">
+        <div class="card">
+            {% if book.cover_id %}
+            <!-- Trường hợp ảnh bìa trong GridFS -->
+            <img src="{{ url_for('get_cover', cover_id=book.cover_id) }}" 
+                 class="card-img-top" style="height: 400px; object-fit: cover;">
+            
+            {% elif book.cover_image %}
+            <!-- Trường hợp ảnh bìa lưu trong static/covers -->
+            <img src="{{ url_for('static', filename='covers/' + book.cover_image.split('/')[-1]) }}" 
+                 class="card-img-top" style="height: 400px; object-fit: cover;">
+            
+            {% else %}
+            <!-- Trường hợp không có ảnh bìa -->
+            <div class="card-img-top d-flex align-items-center justify-content-center" 
+                 style="height: 400px; background: #f8f9fa;">
+                <i class="fas fa-book fa-5x text-muted"></i>
+            </div>
+            {% endif %}
+
+            <div class="card-body text-center">
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('download_book', book_id=book._id) }}" class="btn btn-primary">
+                        <i class="fas fa-download me-2"></i>Tải xuống
+                    </a>
+                    <a href="{{ url_for('toggle_favorite', book_id=book._id) }}" 
+                       class="btn btn-{{ 'danger' if is_favorite else 'outline-danger' }}">
+                        <i class="fas fa-heart me-2"></i>{{ 'Bỏ yêu thích' if is_favorite else 'Yêu thích' }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="card-title">{{ book.title }}</h1>
+                <h5 class="text-muted mb-3">{{ book.author }}</h5>
+                
+                <div class="row mb-3">
+                    <div class="col-sm-4"><strong>Năm xuất bản:</strong></div>
+                    <div class="col-sm-8">{{ book.published_year }}</div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-sm-4"><strong>Ngày thêm:</strong></div>
+                    <div class="col-sm-8">{{ book.created_at.strftime('%d/%m/%Y %H:%M') }}</div>
+                </div>
+                
+                {% if book.description %}
+                <div class="mb-3">
+                    <strong>Mô tả:</strong>
+                    <p class="mt-2">{{ book.description }}</p>
+                </div>
+                {% endif %}
+                
+                <!-- PDF Viewer -->
+                {% if book.file_path and book.file_path.endswith('.pdf') %}
+                <div class="mb-3">
+                    <strong>Xem trước:</strong>
+                    <div class="mt-2">
+                        <embed src="{{ url_for('static', filename='uploads/' + book.file_path.split('/')[-1]) }}" 
+                               type="application/pdf" width="100%" height="500px">
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

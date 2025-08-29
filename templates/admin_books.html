@@ -1,0 +1,74 @@
+﻿<!-- templates/admin_books.html -->
+{% extends "base.html" %}
+
+{% block title %}Quản lý sách - Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2"><i class="fas fa-book me-2"></i>Quản lý sách</h1>
+    <a href="{{ url_for('admin_add_book') }}" class="btn btn-primary">
+        <i class="fas fa-plus me-2"></i>Thêm sách mới
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table align-middle table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th style="width: 80px;">Ảnh bìa</th>
+                        <th>Tên sách</th>
+                        <th>Tác giả</th>
+                        <th>Năm xuất bản</th>
+                        <th>Ngày thêm</th>
+                        <th style="width: 120px;">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for book in books %}
+                    <tr>
+                        <td>
+                            {% if book.cover_image %}
+                            <img src="{{ url_for('static', filename='covers/' + book.cover_image.split('/')[-1]) }}" 
+                                 alt="Cover" class="img-thumbnail"
+                                 style="width: 60px; height: 80px; object-fit: cover;">
+                            {% else %}
+                            <div style="width: 60px; height: 80px; background: #f8f9fa; border: 1px solid #ddd; display: flex; align-items: center; justify-content: center; border-radius: 5px;">
+                                <i class="fas fa-book text-muted"></i>
+                            </div>
+                            {% endif %}
+                        </td>
+                        <td><strong>{{ book.title }}</strong></td>
+                        <td>{{ book.author }}</td>
+                        <td>{{ book.published_year }}</td>
+                        <td>{{ book.created_at.strftime('%d/%m/%Y') }}</td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <a href="{{ url_for('book_detail', book_id=book._id) }}" 
+                                   class="btn btn-outline-info" title="Xem chi tiết">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="{{ url_for('admin_edit_book', book_id=book._id) }}" 
+                                   class="btn btn-outline-warning" title="Chỉnh sửa">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{{ url_for('admin_delete_book', book_id=book._id) }}" 
+                                   class="btn btn-outline-danger" title="Xóa"
+                                   onclick="return confirm('Bạn có chắc muốn xóa sách này?')">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">Chưa có sách nào</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

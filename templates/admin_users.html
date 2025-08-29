@@ -1,0 +1,63 @@
+﻿<!-- templates/admin_users.html -->
+{% extends "base.html" %}
+
+{% block title %}Quản lý người dùng - Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2"><i class="fas fa-users me-2"></i>Quản lý người dùng</h1>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Tên</th>
+                        <th>Email</th>
+                        <th>Vai trò</th>
+                        <th>Trạng thái</th>
+                        <th>Ngày tạo</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            <span class="badge bg-{{ 'danger' if user.role == 'Admin' else 'primary' }}">
+                                {{ user.role }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge bg-{{ 'success' if user.status == 'Active' else 'danger' }}">
+                                {{ user.status }}
+                            </span>
+                        </td>
+                        <td>{{ user.created_at.strftime('%d/%m/%Y') }}</td>
+                        <td>
+                            {% if user.role != 'Admin' %}
+                            <a href="{{ url_for('admin_toggle_user', user_id=user._id) }}" 
+                               class="btn btn-sm btn-outline-{{ 'danger' if user.status == 'Active' else 'success' }}">
+                                <i class="fas fa-{{ 'lock' if user.status == 'Active' else 'unlock' }}"></i>
+                                {{ 'Khóa' if user.status == 'Active' else 'Mở khóa' }}
+                            </a>
+                            {% else %}
+                            <span class="text-muted">Admin</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">Chưa có người dùng nào</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

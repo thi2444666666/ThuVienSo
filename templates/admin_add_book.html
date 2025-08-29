@@ -1,0 +1,47 @@
+﻿{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>📚 Quản lý sách</h2>
+    <a href="{{ url_for('admin_add_book') }}" class="btn btn-success mb-3">+ Thêm sách</a>
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>Ảnh bìa</th>
+                <th>Tiêu đề</th>
+                <th>Tác giả</th>
+                <th>Thể loại</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for book in books %}
+            <tr>
+                <td>
+                    {% if book.cover_id %}
+                        <img src="{{ url_for('get_cover', book_id=book._id) }}" 
+                             alt="Cover" style="width:50px; height:60px; object-fit:cover;">
+                    {% elif book.cover_image %}
+                        <img src="{{ url_for('static', filename='covers/' + book.cover_image.split('/')[-1]) }}" 
+                             alt="Cover" style="width:50px; height:60px; object-fit:cover;">
+                    {% else %}
+                        <div style="width:50px; height:60px; background:#f8f9fa; 
+                                    display:flex; align-items:center; justify-content:center;">
+                            <i class="fas fa-book text-muted"></i>
+                        </div>
+                    {% endif %}
+                </td>
+                <td>{{ book.title }}</td>
+                <td>{{ book.author }}</td>
+                <td>{{ book.category }}</td>
+                <td>
+                    <a href="{{ url_for('book_detail', book_id=book._id) }}" class="btn btn-info btn-sm">Xem</a>
+                    <a href="{{ url_for('admin_edit_book', book_id=book._id) }}" class="btn btn-warning btn-sm">Sửa</a>
+                    <a href="{{ url_for('admin_delete_book', book_id=book._id) }}" class="btn btn-danger btn-sm"
+                       onclick="return confirm('Bạn có chắc chắn muốn xóa sách này?');">Xóa</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,89 @@
+﻿{% extends "base.html" %}
+{% block title %}Dashboard - Thư viện Số{% endblock %}
+
+{% block content %}
+<div class="pt-3 pb-2 mb-3">
+    <h1 class="h2"><i class="fas fa-home me-2"></i>Chào mừng, {{ session.user_name }}!</h1>
+    <p class="text-muted">Khám phá thư viện sách số phong phú của chúng tôi</p>
+</div>
+
+<!-- Search Box -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form action="{{ url_for('search_books') }}" method="GET" class="d-flex">
+                    <input type="text" name="q" class="form-control me-2" placeholder="Tìm kiếm sách theo tên, tác giả...">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Books -->
+<div class="mb-4">
+    <h3><i class="fas fa-star me-2"></i>Sách mới nhất</h3>
+    <div class="row">
+        {% for book in recent_books %}
+        <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+            <div class="card h-100">
+                {% if book.cover_id %}
+                    <img src="{{ url_for('get_cover', book_id=book._id) }}" class="card-img-top img-thumbnail"
+                         style="height:200px; object-fit:cover;">
+                {% elif book.cover_image %}
+                    <img src="{{ url_for('static', filename='covers/' + book.cover_image.split('/')[-1]) }}" 
+                         class="card-img-top img-thumbnail" style="height:200px; object-fit:cover;">
+                {% else %}
+                    <div class="d-flex align-items-center justify-content-center bg-light"
+                         style="height:200px; border:1px solid #ddd; border-radius:5px;">
+                        <i class="fas fa-book fa-3x text-muted"></i>
+                    </div>
+                {% endif %}
+                <div class="card-body d-flex flex-column">
+                    <h6 class="card-title">{{ book.title[:30] }}{% if book.title|length > 30 %}...{% endif %}</h6>
+                    <p class="card-text text-muted small">{{ book.author }}</p>
+                    <a href="{{ url_for('book_detail', book_id=book._id) }}" class="btn btn-primary btn-sm mt-auto">
+                        <i class="fas fa-eye me-1"></i>Xem
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Favorite Books -->
+{% if favorite_books %}
+<div class="mb-4">
+    <h3><i class="fas fa-heart me-2"></i>Sách yêu thích</h3>
+    <div class="row">
+        {% for book in favorite_books %}
+        <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+            <div class="card h-100">
+                {% if book.cover_id %}
+                    <img src="{{ url_for('get_cover', book_id=book._id) }}" class="card-img-top img-thumbnail"
+                         style="height:200px; object-fit:cover;">
+                {% elif book.cover_image %}
+                    <img src="{{ url_for('static', filename='covers/' + book.cover_image.split('/')[-1]) }}" 
+                         class="card-img-top img-thumbnail" style="height:200px; object-fit:cover;">
+                {% else %}
+                    <div class="d-flex align-items-center justify-content-center bg-light"
+                         style="height:200px; border:1px solid #ddd; border-radius:5px;">
+                        <i class="fas fa-book fa-3x text-muted"></i>
+                    </div>
+                {% endif %}
+                <div class="card-body d-flex flex-column">
+                    <h6 class="card-title">{{ book.title[:30] }}{% if book.title|length > 30 %}...{% endif %}</h6>
+                    <p class="card-text text-muted small">{{ book.author }}</p>
+                    <a href="{{ url_for('book_detail', book_id=book._id) }}" class="btn btn-primary btn-sm mt-auto">
+                        <i class="fas fa-eye me-1"></i>Xem
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endblock %}
